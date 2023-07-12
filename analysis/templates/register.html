@@ -1,0 +1,70 @@
+
+{% extends 'basic.html' %}
+
+{% load static %}
+
+{% block title%} Sign Up {% endblock %}
+
+		
+        {% block homeurl %} "\"{% endblock %}
+        {% block abouturl %} "\about/" {% endblock %}
+        {% block contacturl %} "\contact/" {% endblock %}
+ 
+{% block body %}
+        
+        <!-- MATERIAL DESIGN ICONIC FONT -->
+		<link rel="stylesheet" href="{% static 'fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
+
+		<div class="p-5" style="background-image: url({% static 'images/bg-registration-form-1.jpg' %});">
+		<div style="background-color:white;width:900px" class="container">
+			<div class="container row pt-4">
+				<div class="col">
+					<img src="{% static 'images/registration-form-1.jpg' %}" alt="" width=405 height=536>
+				</div>
+				<div class="col">
+					<form name="signup" action="\signup/" method="post">
+					{% csrf_token %}
+						<h3 align="center" style="color:red">Registration Form</h3>
+						<div class="form-group mt-4 border border-info rounded">
+							<input type="text" placeholder="First Name"  name="fname" class="form-control" required>
+						</div>
+						<div class="form-group border border-danger rounded">
+							<input type="text" placeholder="Last Name" name="lname" class="form-control" required>
+						</div>
+						<div class="form-group border border-secondary rounded">
+							<input type="text" placeholder="Username" name="username" class="form-control" required>
+				
+						</div>
+						<div class="form-group border border-primary rounded">
+							<input type="email" placeholder="Email Address" name="email" class="form-control" required>
+							
+						</div>
+						<div class="form-group border border-dark rounded">
+							<select name="domain" class="form-control" required>
+								<option value="" disabled selected>Domain</option>
+								<option value="student">Student</option>
+								<option value="business">Business</option>
+								<option value="other">Other</option>
+							</select>
+							
+						</div>
+						<div class="form-group border border-danger rounded">
+							<input type="password" placeholder="Password" name="passw" class="form-control" required>
+							
+						</div>
+						<div class="form-group border border-success rounded">
+							<input type="password" placeholder="Confirm Password" name="re_pass" class="form-control" required>
+							
+						</div>
+						<div class="m-5">
+							<button style="width:200px;color:white;background-color:black;border-radius:15px" class="p-2" type="submit">Register
+								<i class="zmdi zmdi-arrow-right"></i>
+							</button>
+						</div>
+					</form>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+{% endblock %}

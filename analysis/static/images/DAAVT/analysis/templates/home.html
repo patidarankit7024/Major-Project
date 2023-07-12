@@ -1,0 +1,49 @@
+
+
+{% extends 'basic.html' %}
+
+{% block title%} Welcome {% endblock %}
+ 
+ {% block css %} 
+
+body{
+background-image:url('https://image.freepik.com/free-vector/abstract-metallic-blue-black-frame-design-innovation-concept-layout-background_71775-113.jpg');
+background-repeat:no-repeat;
+background-size:cover;
+font-family: 'Open Sans', sans-serif;
+}
+
+
+
+{% endblock %}
+
+        {% block homeurl %} ""{% endblock %}
+
+        {% block abouturl %} "about/" {% endblock %}
+        {% block contacturl %} "contact/"{% endblock %}
+        
+        
+    {% block homeactive %} active {% endblock %}
+
+
+{% load static %}
+
+
+
+{% block body %}
+<div class="container my-5 p-4">
+    <div class="jumbotron mx-5"  style="background-image:url('https://www.itl.cat/pngfile/big/0-7755_nature-pier-bridge-d-river-water-sunset-night.jpg');background-size:cover;background-repeat:no-repeat">
+        <h1 align="center" style="font-size:40px;color:white">Select a CSV file to analyse your data </h1>
+        <form class="p-3" action="\plot/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div align="center" class="form-group p-2 bg-secondary border border-danger rounded" style="background-color:white"> 
+                <input type="file" name="csvfile" accept=".csv" required /> 
+            </div>
+            <div align="center" class="form-group"> 
+                <input style="width:200px" class="bn btn-success btn-lg" type="submit" value="submit">  
+            </div>
+        </form>
+    </div>
+</div>
+    
+ {% endblock %}

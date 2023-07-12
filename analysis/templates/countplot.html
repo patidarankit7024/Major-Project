@@ -1,0 +1,144 @@
+{% extends 'basic.html' %}
+ 
+ {% block css %} 
+
+.dropdown1:hover>.dropdown-menu {
+  display: block;
+}
+
+.dropdown1>.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
+
+
+
+
+
+{% load static %}
+
+
+{% endblock %}
+
+        {% block homeurl %} "\"{% endblock %}
+
+        {% block abouturl %} "\about/" {% endblock %}
+        {% block contacturl %} "\contact/"{% endblock %}
+        
+        
+    {% block homeactive %} active {% endblock %}
+
+{% block dashboard %}
+    <a id="tab" class="nav-link" href="\plot/">Dashboard</a>
+{% endblock %}
+
+    {% block menublock %}
+   
+                          <div class="dropdown mr-5">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    Menu (Methods)
+                </button>
+                <div class="dropdown-menu">
+                    <div class="dropdown dropdown1 dropright">
+                      <button style="color:blue" class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         Visualize Data
+                      </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <ul class="nav flex-column">
+                          <li class="nav-item bg-success">
+                            <a style="color:white"  class="nav-link" href="\barplot/">Bar Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\scatterplot/">Scatter Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\histogramplot/">Histogram plot</a>
+                          </li>
+    						  <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\piechart/">Pie Chart</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\boxplot/">Box Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\lineplot/">Line plot</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link" href="\insights/">Insights</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="\correlationplot/">Correlation</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Generate Report</a>
+                    </li>
+                </ul>
+              
+        </div>             
+        </div>
+  
+    {% endblock %}
+        
+        
+     
+
+
+
+{% block body %}
+
+    <div class="d-flex justify-content-center mt-4 mb-1">
+    <div align="center" style="max-width:fit-content" class="form-row container bg-danger p-2">
+        <div class="ml-3">
+            <select id="attr1" class="custom-select my-1 mr-sm-2">
+                <option value="null">Choose...</option>
+                {% for i in attributes %}
+                    <option value={{ i }}>{{ i }}</option>
+                {% endfor %}
+          </select>
+        </div>
+        
+        <div class="ml-4"><input type="button" class="btn btn-success my-1" value="View Plot" onclick="show_histogram()"></div>
+        
+    </div>
+    </div>
+    
+    <p align="center" style="color:white;font-size:20px" class="bg bg-dark" id="error"></p>
+    <div align="center" style="display:none;color:white;font-size:20px;max-width:fit-content" class="container bg bg-dark p-3" id="div1"></div>
+    
+    
+    {% for img in images %}
+    {% with "images/countplot/"|add:img as path %}
+        <div id={{img}} style="display:none"><img class="img-fluid" src="{% static path %}"></div>
+    {% endwith %}
+    {% endfor %}
+    
+    <div id="countplotbg" class="container"><img class="img-fluid" src="{% static 'images/countplotbg.png' %}"></div>
+    
+      
+    <script>
+        function show_histogram()
+        {
+            var attr1=document.getElementById("attr1").value;
+            
+            if(attr1=="null"){
+            document.getElementById("error").innerHTML="please select the attribute";
+            }
+            else{
+                {% for img in images %}
+                    document.getElementById("{{img}}").style.display="none";
+                {% endfor %}
+                document.getElementById(attr1+"Countplot.png").style.display="block";
+                document.getElementById("error").innerHTML="";
+                document.getElementById("div1").style.display="block";
+                document.getElementById("div1").innerHTML="Count Plot Of "+attr1;
+                
+            }
+        }
+    </script>
+    
+{% endblock %}
+

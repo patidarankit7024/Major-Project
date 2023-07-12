@@ -1,0 +1,117 @@
+{% extends 'basic.html' %}
+
+{% block title%} Welcome {% endblock %}
+ 
+ {% block css %} 
+
+table th{
+    background-color:black;
+    color:white;
+    padding:10px;
+}
+tr:nth-child(even) {background: #ddff99}
+tr:nth-child(odd) {background: #999999}
+
+.anyClass {
+  height:600px;
+  overflow-y: scroll;
+}
+
+.dropdown1:hover>.dropdown-menu {
+  display: block;
+}
+
+.dropdown1>.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
+
+.modebar{
+    display:none;
+}
+
+{% load static %}
+
+
+{% endblock %}
+
+        {% block homeurl %} "\"{% endblock %}
+
+        {% block abouturl %} "\about/" {% endblock %}
+        {% block contacturl %} "\contact/"{% endblock %}
+        
+    {% block homeactive %} active {% endblock %}
+
+{% block dashboard %}
+    <a id="tab" class="nav-link" href="\plot/">Dashboard</a>
+{% endblock %}
+
+    {% block menublock %}
+   
+        <div class="dropdown mr-5">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Menu (Methods)
+            </button>
+            <div class="dropdown-menu">
+                <div class="dropdown dropdown1 dropright">
+                  <button style="color:blue" class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Visualize Data
+                  </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <ul class="nav flex-column">
+                          <li class="nav-item bg-success">
+                            <a style="color:white"  class="nav-link" href="\barplot/">Bar Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\scatterplot/">Scatter Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\histogramplot/">Histogram plot</a>
+                          </li>
+    						  <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\piechart/">Pie Chart</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\boxplot/">Box Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\lineplot/">Line plot</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="\insights/">Insights</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="\correlationplot/">Correlation</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Generate Report</a>
+                </li>
+            </ul>
+          
+        </div> 
+        </div>
+  
+    {% endblock %}
+
+
+
+{% block body %}
+
+        
+    <div class="m-5" id="basic_statistics">
+        <div class="row">
+           <div style="min-width:47%" class="table-responsive bg-success p-3 m-3 col-5">{{ head1|safe }}</div>
+            <div style="min-width:47%" class="table-responsive bg-danger p-3 m-3 col-5">{{ describe1|safe }}</div>
+        </div>
+        <div class="row width:fit-content">
+            <div align="center" style="min-width:47%;width:fit-content" class="table-responsive bg-info m-3 p-3 anyClass col-5">{{ process_content_info1|safe }}</div>
+            <div style="min-width:47%;width:fit-content" class="bg-dark pt-5 col-5">{{plot|safe}}</div>
+        </div>
+    </div>
+    
+{% endblock %}
+

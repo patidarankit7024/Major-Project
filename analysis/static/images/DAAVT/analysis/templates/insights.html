@@ -1,0 +1,120 @@
+{% extends 'basic.html' %}
+
+{% block title%} Insights {% endblock %}
+ 
+ {% block css %} 
+
+.dropdown1:hover>.dropdown-menu {
+  display: block;
+}
+
+.dropdown1>.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
+
+
+{% load static %}
+
+
+{% endblock %}
+
+        {% block homeurl %} "\"{% endblock %}
+
+        {% block abouturl %} "\about/" {% endblock %}
+        {% block contacturl %} "\contact/"{% endblock %}
+        
+    {% block homeactive %} active {% endblock %}
+
+{% block dashboard %}
+    <a id="tab" class="nav-link" href="\plot/">Dashboard</a>
+{% endblock %}
+
+    {% block menublock %}
+                <div class="dropdown mr-5">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    Menu (Methods)
+                </button>
+                <div class="dropdown-menu">
+                    <div class="dropdown dropdown1 dropright">
+                      <button style="color:blue" class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         Visualize Data
+                      </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <ul class="nav flex-column">
+                          <li class="nav-item bg-success">
+                            <a style="color:white"  class="nav-link" href="\barplot/">Bar Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\scatterplot/">Scatter Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\histogramplot/">Histogram plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\boxplot/">Box Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\countplot/">Count plot</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link" href="\insights/">Insights</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="\correlationplot/">Correlation</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="\report/">Generate Report</a>
+                    </li>
+                </ul>
+              
+        </div>             
+        </div>
+    {% endblock %}
+
+
+{% block body %}
+
+    <div class="container mt-5">  
+    <div align="center" style="color:white;font-size:25px" class="container bg bg-success p-3 mt-3 mb-3">Some Basic Insights of Data</div>         
+  <table class="table table-dark table-hover table-striped">
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>No of rows</td>
+        <td>{{rows}}</td>
+      </tr>
+      <tr>
+        <td>No of columns</td>
+        <td>{{columns}}</td>
+      </tr>
+      <tr>
+        <td>No of numerical values</td>
+        <td>{{numerical}}</td>
+      </tr>
+      <tr>
+        <td>No of catagorical values</td>
+        <td>{{catagorical}}</td>
+      </tr>
+      <tr>
+        <td>No of attributes with null values</td>
+        <td>{{nullvalue}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="color:white" class="container bg bg-info p-3 mt-3">{{maxnull}}</div>
+  <div style="color:white" class="container bg bg-danger p-3 mt-3 mb-3">{{extra}}</div>
+
+</div>
+    
+{% endblock %}
+

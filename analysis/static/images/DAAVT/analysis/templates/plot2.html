@@ -1,0 +1,203 @@
+{% extends 'basic.html' %}
+
+{% block title%} Welcome {% endblock %}
+ 
+ {% block css %} 
+
+
+.plotlyjsicon{
+	display:none;
+}
+
+.dropdown1:hover>.dropdown-menu {
+  display: block;
+}
+
+.dropdown1>.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
+
+.icon{
+    height:30px;
+}
+
+{% load static %}
+
+
+{% endblock %}
+
+        {% block homeurl %} "\"{% endblock %}
+
+        {% block abouturl %} "\about/" {% endblock %}
+        {% block contacturl %} "\contact/"{% endblock %}
+        
+    {% block homeactive %} active {% endblock %}
+
+{% block dashboard %}
+    <a id="tab" class="nav-link" href="\plot/">Dashboard</a>
+{% endblock %}
+
+
+{% block body %}
+		<div class="dropdown my-3">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                Menu (Methods)
+            </button>
+            <div class="dropdown-menu">
+                <div class="dropdown dropdown1 dropright">
+                  <button style="color:blue" class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Visualize Data
+                  </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <ul class="nav flex-column">
+                          <li class="nav-item bg-success">
+                            <a style="color:white"  class="nav-link" href="\barplot/">Bar Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\scatterplot/">Scatter Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\histogramplot/">Histogram plot</a>
+                          </li>
+    						  <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\piechart/">Pie Chart</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\boxplot/">Box Plot</a>
+                          </li>
+                          <li class="nav-item bg-success mt-1">
+                            <a style="color:white"  class="nav-link" href="\lineplot/">Line plot</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="\insights/">Insights</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="\correlationplot/">Correlation</a>
+                </li>
+                <li class="nav-item">
+                    <form id="myform" action="\report/" method="post" name="myform">
+                    {% csrf_token %}
+                        <input style="display:none" id="allitem" type="text" name="allitem">   
+                        <a class="nav-link"  href="javascript:save();">Generate Report</a>     
+                    </form>
+                </li>
+            </ul>
+          
+        </div>             
+        </div>
+		
+	<div class="d-flex justify-content-center mt-4 mb-1">
+    <div align="center" style="max-width:fit-content" class="form-row container bg-danger p-2">
+        <div class="ml-3">
+            <select id="attr1" class="custom-select my-1 mr-sm-2">
+                <option value="null">Choose...</option>
+                {% for i in attributes_x %}
+                    <option value={{ i }}>{{ i }}</option> 
+                {% endfor %}
+          </select>
+        </div>
+        
+        <div class="ml-3"> 
+          <select id="attr2" class="custom-select my-1 mr-sm-2">
+                <option value="null">Choose...</option>
+                {% for i in attributes_y %}
+                    <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+          </select>
+        </div>
+        
+        <div class="ml-4"><input type="button" class="btn btn-success my-1" value="View Plot" onclick="show_plot()"></div>
+        
+    </div>
+    </div>
+    
+    <p align="center" style="color:white;font-size:20px" class="bg bg-dark" id="error"></p>
+    <div align="center" style="display:none;color:white;font-size:20px;max-width:fit-content" class="container bg bg-dark p-3" id="div1"></div>
+		
+		{% for key,value in dict1.items %}
+			<div id="{{key}}" style="margin-top:100px">{{value|safe}}</div>
+		{% endfor %}
+			
+			<div id="plot" style="margin-top:100px">{{plot|safe}}</div>
+		
+	<script>
+		{% for key in dict1 %}
+			document.getElementById("{{key}}").style.display="none";
+		{% endfor %}
+		
+        function show_plot()
+        {
+            var attr1=document.getElementById("attr1").value;
+            var attr2=document.getElementById("attr2").value;
+			
+            if(attr1=="null"){
+                document.getElementById("error").innerHTML="please select the first attribute";
+            }
+            else if(attr2=="null"){
+                document.getElementById("error").innerHTML="please select the second attribute";
+            }
+            else{
+                if(localStorage.getItem("{{plot_name}}")===null){
+                        localStorage.setItem("{{plot_name}}",JSON.stringify([[attr1,attr2]]));
+                }
+                else{                
+                    var arr=JSON.parse(localStorage.getItem("{{plot_name}}"));
+                    arr.push([attr1,attr2]);
+                    localStorage.setItem("{{plot_name}}",JSON.stringify(arr));
+                }
+                
+				{% for key in dict1 %}
+					document.getElementById("{{key}}").style.display="none";
+				{% endfor %}
+				
+				document.getElementById("plot").style.display="none";
+                document.getElementById(attr1+"_"+attr2).style.display="block";
+                document.getElementById("error").innerHTML="";
+                document.getElementById("div1").style.display="block";
+                document.getElementById("div1").innerHTML="{{plot_name}} Between "+attr1+" And "+attr2;
+                
+                var els = document.getElementsByClassName('modebar--hover');
+                removeClass(els, 'modebar--hover');
+                
+                var el = document.getElementById('modebar--hover');
+                removeClass([el], 'modebar--hover');
+                
+                function removeClass(elements, className) {
+                	for (var i = 0; i < elements.length; i++) {
+                		var element = elements[i];
+                		if (element.classList) {
+                			element.classList.remove(className);
+                		} else {
+                			element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+                		}
+                	}
+                }
+            }
+        }
+        
+    </script>
+<div>
+    
+    <script>
+        function save(){
+               var arr={};
+               for (i = 0; i < localStorage.length; i++) {
+                  x = localStorage.key(i);
+                  arr[x.split(" ")[0]]=localStorage.getItem(x);
+               }
+                y=JSON.stringify(arr);
+                
+                document.getElementById("allitem").value=y;
+				
+				localStorage.clear();
+                document.getElementById("myform").submit();
+          }  
+    </script>
+</div>
+
+{% endblock %}
